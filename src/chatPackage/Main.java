@@ -1,10 +1,14 @@
 package chatPackage;
 
+
+
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		chatServer startServerThread = new chatServer();
+		startServerThread.start();
+		chatClient startClientThread = new chatClient();
+		startClientThread.start();
 	}
 
 }
