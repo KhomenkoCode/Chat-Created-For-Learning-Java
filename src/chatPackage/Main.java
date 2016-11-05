@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import Client.chatClient;
+import Server.ServerMain;
+
 public class Main {
 
 	public static void main(String[] args){
@@ -21,12 +24,12 @@ public class Main {
 				switch(choise){
 				
 					case "server":	
-						chatServer startServerThread = new chatServer();
-						startServerThread.start();
+						ServerMain newServer = new ServerMain();
+						newServer.startServerPart();
 						break chosen;
 					case "client":
-						chatClient startClientThread = new chatClient();
-						startClientThread.start();
+						chatClient newClient = new chatClient();
+						newClient.startClientsPart();
 						break chosen;
 					default:
 						break;
