@@ -32,13 +32,10 @@ public class chatClient {
             	line = keyboard.readLine(); 
             	out.writeUTF( (line.trim()) );
             	out.flush();
-
-         	   System.out.println("meow1");
             	line = in.readUTF();
             	if(line.equals("au"))
             		System.out.println("Username is already used, try another one");
             	else if(line.equals("ok")){
-            		System.out.println("ok");
             		break;	
             	}
             }

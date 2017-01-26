@@ -15,8 +15,6 @@ public class ServerMain{
 	         ss = new ServerSocket(port);
 	         ServerAddConnectionsThread ConnectionsThread = new ServerAddConnectionsThread(clients, ss);
 	         ConnectionsThread.start();
-	        
-	         
 	      } 
 	       catch(Exception x) { 
 	    	  x.printStackTrace(); 

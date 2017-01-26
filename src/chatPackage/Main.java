@@ -15,6 +15,9 @@ public class Main {
 		System.out.println("write \"server\" to run in Server mode");
 		System.out.println("write \"client\" to run in Client mode");
 		
+	       
+	   
+		
 		try{
 			chosen: 
 			while(true){
