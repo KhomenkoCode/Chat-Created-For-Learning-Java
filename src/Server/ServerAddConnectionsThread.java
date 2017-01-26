@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class ServerAddConnectionsThread extends Thread{
 	private ArrayList<Connection> clients;
-	private boolean stopConnectingTheUsers = false;
+	private boolean stopConnectingTheUsers = false;  
 	ServerSocket server;
 	
 	ServerAddConnectionsThread(ArrayList<Connection> ConnectionsList, ServerSocket ss){
@@ -19,45 +19,57 @@ public class ServerAddConnectionsThread extends Thread{
 	}
 	
 	public void run(){
+		//New server connection attributes
+		Socket socket;
+		DataInputStream in; 
+		DataOutputStream out; 
+		String Username;
+		Connection tempConnection;
+		
+		boolean isRightNickname = true; 
+		ConnectionResendingMessagesThread Resender; //Thread, that resends all messages from current user to all others
+		
 		while(!stopConnectingTheUsers){
-			Socket socket;
-			DataInputStream in; 
-			DataOutputStream out; 
-			String Username;
-			Connection tempConnection;
+			
 			try {
-			
-			socket = server.accept();
-			in = new DataInputStream(socket.getInputStream());
-			out = new DataOutputStream(socket.getOutputStream());
-			
-			//endSendingUsername: while(true){ //check for already existing username 
+				socket = server.accept();
+				in = new DataInputStream(socket.getInputStream());
+				out = new DataOutputStream(socket.getOutputStream());
+				
+				while(true){
+				isRightNickname = true;
 				Username = in.readUTF();
-			
-				/*for(Connection s: clients){ 
-					if(s.Username == Username){
-						out.writeUTF("AU"); // AU - Already Used
+				
+				for(Connection client: clients) //checking for already existing user name 
+					if(Username.equals(client.Username))
+						isRightNickname = false;
+				
+					if(isRightNickname == false){ 
+						out.writeUTF("au");
 						out.flush();
-						}
-					else {
-						out.writeUTF("Ok"); 
-						out.flush();
-						break endSendingUsername;
-					}
-					
+					}else break;
 				}
-			}*/
+				
+				out.writeUTF("ok");
+				
+				tempConnection = new Connection(socket, Username, in, out);
 			
-			tempConnection = new Connection(socket, Username, in, out);
-			
-			clients.add(tempConnection);
-			
-			System.out.println("User " + Username + " connect");
-			
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				clients.add(tempConnection);
+				
+				Resender = new ConnectionResendingMessagesThread(tempConnection, clients);
+				Resender.start();
+				
+				System.out.println("User " + Username + " connected");
+				
+				for(Connection con: clients)
+				{
+					con.Out.writeUTF(Username + " connected to a lobby");
+					con.Out.flush();
+				}
+				
+			} catch (IOException e) {	
 				e.printStackTrace();
-			} //waiting user connection
+			} 
 			
 		}
 	}

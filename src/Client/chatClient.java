@@ -10,9 +10,10 @@ import java.net.Socket;
 public class chatClient {
 	private Socket socket;
 
+	///TODO function throws SOCKETEXCEPTION when server is down; try/catch 
+	
 	public void startClientsPart(){
 	
-		//Need to ask a nickname 
 		int serverPort = 1234; 
         String address = "127.0.0.1"; 
 
@@ -27,36 +28,31 @@ public class chatClient {
             String line = null;
             System.out.print("Type your Username here:  ");
             
-            //endSendingUsername: while(true){
+           while(true){
             	line = keyboard.readLine(); 
             	out.writeUTF( (line.trim()) );
             	out.flush();
-            /*	if((in.readUTF().toString()).equals("AU"))
-            		System.out.println("Username already used, try another one");
-            	else{
-            		System.out.println("Ok");
-            		break endSendingUsername;	
+
+         	   System.out.println("meow1");
+            	line = in.readUTF();
+            	if(line.equals("au"))
+            		System.out.println("Username is already used, try another one");
+            	else if(line.equals("ok")){
+            		System.out.println("ok");
+            		break;	
             	}
-            }*/
+            }
             
+           ClientChatMessageReceiver Receiver = new ClientChatMessageReceiver(in);
+           Receiver.start();
+           
            while (true) {
                 line = keyboard.readLine(); 
 
-                out.writeUTF(line);				//Isn't a good to this send message to a server
-                if(line.equals("exit")) break;	//This client & server will close simultaneously
-                								//Need to be a careful in realization many clients
-
-                
-                out.flush(); 
-                line = in.readUTF(); 
-                
-                System.out.println("Client get : " + line);
- 	            System.out.println("Waiting for the next line...");
-               
+                out.writeUTF(line);					
+                out.flush();   
             }
-            
- 	         in.close();
- 		     out.close();
+           
         } catch (Exception x) {
             x.printStackTrace();
         }

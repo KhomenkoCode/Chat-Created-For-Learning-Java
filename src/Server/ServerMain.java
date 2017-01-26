@@ -2,7 +2,6 @@ package Server;
 
 import java.net.*;
 import java.util.ArrayList;
-//import java.io.*;
 
 public class ServerMain{
 	private ServerSocket ss;
@@ -17,27 +16,7 @@ public class ServerMain{
 	         ServerAddConnectionsThread ConnectionsThread = new ServerAddConnectionsThread(clients, ss);
 	         ConnectionsThread.start();
 	        
-	         /*System.out.println("Waiting for a client...");
-	        
-	         Socket socket = ss.accept(); //waiting user connection
 	         
-	         DataInputStream in = new DataInputStream(socket.getInputStream());
-	         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-	         
-
-	         String line = null;
-	         while(true) {
-	           
-	           line = in.readUTF();				//After 1 user is gone, a server close = bad idea
-	           if(line.equals("exit")) break;	//very bad
-	           									//TODO this shit works normally(
-	           
-	           out.writeUTF(line);
-	           out.flush(); 
-	         }
-	         
-	         in.close();
-	         out.close();*/
 	      } 
 	       catch(Exception x) { 
 	    	  x.printStackTrace(); 
