@@ -15,9 +15,13 @@ public class ClientChatMessageReceiver extends Thread{
 		{
 			try {
 				tmp = in.readUTF();
-				System.out.println(tmp);
+				ChatUserInterface.addIncomingMessage(tmp);
 			} catch (IOException e) {
-				e.printStackTrace();
+				ChatUserInterface.sendMessageToTheServer("FUCK");
+				// If error is find, try to send message to the chat server
+				// However, this error still will be find in another (ChatUserInterface) class
+				// In any case, stop listening this stream and destroy thread
+				break;
 			}
 			
 		}
