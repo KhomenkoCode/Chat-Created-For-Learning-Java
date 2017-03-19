@@ -6,13 +6,20 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Client.ChatUserInterface;
+import Client.ConnectionWindow;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -24,7 +31,7 @@ public class CreatingServerSocketForm extends JFrame {
 	private JTextField textField;
 	private JTextField txtAdmin;
 	private static ServerSocket mServerSocket;
-	private static ArrayList<Connection> mClients = new ArrayList<Connection>();
+	private static volatile ArrayList<Connection> mClients = new ArrayList<Connection>();
 	private static boolean isWorking = false;
 	
 	public CreatingServerSocketForm() {
@@ -42,10 +49,28 @@ public class CreatingServerSocketForm extends JFrame {
 		JLabel lblPort = new JLabel("Port:");
 		contentPane.add(lblPort, "cell 1 3,alignx trailing");
 		
+		JLabel lblUsername = new JLabel("Username:");
+		contentPane.add(lblUsername, "cell 1 4,alignx trailing");
+		
+		txtAdmin = new JTextField();
+		txtAdmin.setText("Admin");
+		
+		contentPane.add(txtAdmin, "cell 2 4,growx");
+		txtAdmin.setColumns(10);
 		textField = new JTextField();
 		textField.setText("1234");
 		contentPane.add(textField, "cell 2 3,growx");
 		textField.setColumns(10);
+		
+		JButton btnConnectToChat = new JButton("Connect to the chat");
+		btnConnectToChat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ConnectionWindow window = new ConnectionWindow(txtAdmin.getText(), "127.0.0.1", "1234");
+				window.frmConnection.setVisible(true);
+			}
+		});
+		btnConnectToChat.setEnabled(false);
+		contentPane.add(btnConnectToChat, "cell 3 4");
 		
 		JLabel lblNewLabel = new JLabel(" ");
 		lblNewLabel.setForeground(Color.RED);
@@ -62,6 +87,7 @@ public class CreatingServerSocketForm extends JFrame {
 			    	lblNewLabel.setText("Server is working now. (Close window to stop server work)");
 					lblNewLabel.setForeground(Color.MAGENTA);
 					btnStartProgrammAs.setEnabled(false);
+					btnConnectToChat.setEnabled(true);
 				} catch(NumberFormatException e){
 					lblNewLabel.setForeground(Color.RED);
 					lblNewLabel.setText("Error: Field \"Socket\" needs to be an integer");
@@ -74,13 +100,7 @@ public class CreatingServerSocketForm extends JFrame {
 		});
 		contentPane.add(btnStartProgrammAs, "cell 3 3");
 		
-		JLabel lblUsername = new JLabel("Username:");
-		contentPane.add(lblUsername, "cell 1 4,alignx trailing");
 		
-		txtAdmin = new JTextField();
-		txtAdmin.setText("Admin");
-		contentPane.add(txtAdmin, "cell 2 4,growx");
-		txtAdmin.setColumns(10);
 	}
 
 }

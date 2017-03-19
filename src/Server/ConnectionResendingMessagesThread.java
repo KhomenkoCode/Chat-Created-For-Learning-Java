@@ -8,29 +8,34 @@ import java.util.Date;
 //this class realize receiving messages from a client and
 //resending it to other clients 
 public class ConnectionResendingMessagesThread extends Thread{
-	Connection client;
-	String message;
-	private ArrayList<Connection> clients;
+	private Connection mClient;
+	private String mMessage;
+	private ArrayList<Connection> mListOfClients;
 	ConnectionResendingMessagesThread(Connection tmp, ArrayList<Connection> ConnectionsList){
-		client = tmp;
-		clients = ConnectionsList;
+		mClient = tmp;
+		mListOfClients = ConnectionsList;
 	}
 	
 	public void run(){
 		try {
 			while(true){
-				message = client.In.readUTF();
+				try{
+				mMessage = mClient.In.readUTF();
 				String CurrentTime = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
-				if(!message.equals("Me::Disconect"))
-					for(Connection con: clients){
-						con.Out.writeUTF(client.Username +": "+ message + "\t(" + CurrentTime +")");
+					for(Connection con: mListOfClients){
+						con.Out.writeUTF(mClient.Username +": "+ mMessage + "\t(" + CurrentTime +")");
 						con.Out.flush();
 					}
-				else {
-					System.out.println("User " + client.Username + " was disconected");
-					for(Connection con: clients){
-						con.Out.writeUTF("User " + client.Username + " was disconected");
-						con.Out.flush();
+					
+				}catch(java.net.SocketException e) {
+					for(int i = mListOfClients.size()-1; i>=0; i--){
+						if(mListOfClients.get(i).equals(mClient))
+							mListOfClients.remove(i);
+						else
+						{
+							mListOfClients.get(i).Out.writeUTF("User " + mClient.Username + " was disconected");
+							mListOfClients.get(i).Out.flush();
+						}
 					}
 					break;
 				}

@@ -59,7 +59,6 @@ public class ServerAddConnectionsThread extends Thread{
 				Resender = new ConnectionResendingMessagesThread(tempConnection, clients);
 				Resender.start();
 				
-				System.out.println("User " + Username + " connected");
 				
 				for(Connection con: clients)
 				{

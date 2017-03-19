@@ -92,7 +92,7 @@ public class ChatUserInterface extends JFrame {
 		
 		ClientChatMessageReceiver Receiver = new ClientChatMessageReceiver(mSocketInputStream);
         Receiver.start();
-			
+		
 	}
 	
 	protected static void addIncomingMessage(String message){
