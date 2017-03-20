@@ -24,9 +24,9 @@ import java.awt.Color;
 public class ConnectionWindow {
 
 	public JFrame frmConnection;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField ipTextField;
+	private JTextField serverPortTextField;
+	private JTextField usernameTextField;
 
 	
 	public ConnectionWindow() {
@@ -48,33 +48,33 @@ public class ConnectionWindow {
 		lblIp.setHorizontalAlignment(SwingConstants.RIGHT);
 		frmConnection.getContentPane().add(lblIp, "cell 1 1,alignx trailing");
 		
-		textField = new JTextField();
-		frmConnection.getContentPane().add(textField, "cell 3 1 2 1,growx");
-		textField.setColumns(10);
+		ipTextField = new JTextField();
+		frmConnection.getContentPane().add(ipTextField, "cell 3 1 2 1,growx");
+		ipTextField.setColumns(10);
 		
 		JLabel lblSocket = new JLabel("Socket:");
 		frmConnection.getContentPane().add(lblSocket, "cell 1 2");
 		
-		textField_1 = new JTextField();
-		frmConnection.getContentPane().add(textField_1, "cell 3 2 2 1,growx");
-		textField_1.setColumns(10);
+		serverPortTextField = new JTextField();
+		frmConnection.getContentPane().add(serverPortTextField, "cell 3 2 2 1,growx");
+		serverPortTextField.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username:");
 		frmConnection.getContentPane().add(lblUsername, "cell 1 3");
 		
-		textField_2 = new JTextField();
-		frmConnection.getContentPane().add(textField_2, "cell 3 3 2 1,growx");
-		textField_2.setColumns(10);
+		usernameTextField = new JTextField();
+		frmConnection.getContentPane().add(usernameTextField, "cell 3 3 2 1,growx");
+		usernameTextField.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel(" ");
-		lblNewLabel.setForeground(Color.RED);
+		JLabel errorLabel = new JLabel(" ");
+		errorLabel.setForeground(Color.RED);
 		JButton btnConnect = new JButton("Connect");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
-					int serverPort = Integer.parseInt(textField_1.getText().trim()); 
-					String address = textField.getText().trim();
-					String username = textField_2.getText().trim();
+					int serverPort = Integer.parseInt(serverPortTextField.getText().trim()); 
+					String address = ipTextField.getText().trim();
+					String username = usernameTextField.getText().trim();
 					String answer;
 					
 					if(username.trim().equals(""))
@@ -96,16 +96,16 @@ public class ConnectionWindow {
 					frame.setVisible(true);
 					frmConnection.setVisible(false);
 				}catch(NumberFormatException e){
-					lblNewLabel.setText("Error: Field \"Socket\" needs to be an integer");
+					errorLabel.setText("Error: Field \"Socket\" needs to be an integer");
 				} catch (UnknownHostException e) {
-					lblNewLabel.setText("Error: no working chat on this IP-adress/socket");
+					errorLabel.setText("Error: no working chat on this IP-adress/socket");
 				} catch (IOException e) {
 					if(e.getMessage().equals("AlreadyUsed")) 
-						lblNewLabel.setText("This username is already used, try another one");
+						errorLabel.setText("This username is already used, try another one");
 					else if(e.getMessage().equals("NoUsername"))
-						lblNewLabel.setText("Username field is empty");
+						errorLabel.setText("Username field is empty");
 					else
-						lblNewLabel.setText("Error: Connection to server has been lost");
+						errorLabel.setText("Error: Connection to server has been lost");
 				}
 				
 				
@@ -113,10 +113,10 @@ public class ConnectionWindow {
 		});
 		frmConnection.getContentPane().add(btnConnect, "cell 4 4");
 		
-		frmConnection.getContentPane().add(lblNewLabel, "cell 0 5 6 1");
-		textField.setText(DefaultIP);
-		textField_2.setText(DefaultUsername);
-		textField_1.setText(DefaultPort);
+		frmConnection.getContentPane().add(errorLabel, "cell 0 5 6 1");
+		ipTextField.setText(DefaultIP);
+		usernameTextField.setText(DefaultUsername);
+		serverPortTextField.setText(DefaultPort);
 	}
 
 }

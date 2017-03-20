@@ -58,8 +58,8 @@ public class StartWindow {
 		JLabel lblWelcomeToA = new JLabel("Welcome to a simple chat Application");
 		frmWelcome.getContentPane().add(lblWelcomeToA);
 		
-		JButton btnConnectToAlready = new JButton("Connect to already existing chat");
-		btnConnectToAlready.addActionListener(new ActionListener() {
+		JButton btnConnectToChat = new JButton("Connect to already existing chat");
+		btnConnectToChat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//chatClient newClient = new chatClient();
 				//newClient.startClientsPart();
@@ -68,7 +68,7 @@ public class StartWindow {
 				frmWelcome.setVisible(false);
 			}
 		});
-		frmWelcome.getContentPane().add(btnConnectToAlready);
+		frmWelcome.getContentPane().add(btnConnectToChat);
 		
 		JButton btnCreateChat = new JButton("Create chat");
 		btnCreateChat.addActionListener(new ActionListener() {
